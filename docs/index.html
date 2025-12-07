@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Token Management - Live Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .business-name {
+            color: #666;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .confirmation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .confirmation-card h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .token-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .token-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .token-number {
+            color: white;
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .sms-notification {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .sms-notification p {
+            margin: 5px 0;
+            color: #2e7d32;
+        }
+
+        .demo-note {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e65100;
+            font-weight: 600;
+        }
+
+        .github-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .github-link a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .github-link a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .form-card, .confirmation-card {
+                padding: 30px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 2em;
+            }
+
+            .token-number {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Customer Form -->
+        <div id="customerForm" class="form-card">
+            <div class="demo-note">
+                🎯 LIVE DEMO - Experience the customer token form
+            </div>
+
+            <div class="form-header">
+                <h1>🎫 Get Your Token</h1>
+                <p class="business-name">Demo Business</p>
+            </div>
+
+            <form id="tokenForm">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" placeholder="+91 XXXXXXXXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Service Type *</label>
+                    <select id="serviceType" required>
+                        <option value="">Select service type</option>
+                        <option value="corporate">Corporate</option>
+                        <option value="clinic">Clinic</option>
+                        <option value="temple">Temple</option>
+                        <option value="hotel">Hotel</option>
+                    </select>
+                </div>
+
+                <!-- Corporate Fields -->
+                <div id="corporateFields" class="hidden">
+                    <div class="form-group">
+                        <label>Person to Meet</label>
+                        <input type="text" id="personToMeet" placeholder="Enter person's name">
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" id="department" placeholder="Enter department">
+                    </div>
+                </div>
+
+                <!-- Temple Fields -->
+                <div id="templeFields" class="hidden">
+                    <div class="form-group">
+                        <label>Ritual Type</label>
+                        <input type="text" id="ritualType" placeholder="e.g., Pooja, Abhishek">
+                    </div>
+                    <div class="form-group">
+                        <label>Darshan Type</label>
+                        <input type="text" id="darshanType" placeholder="e.g., General, VIP">
+                    </div>
+                </div>
+
+                <!-- Hotel Fields -->
+                <div id="hotelFields" class="hidden">
+                    <div class="form-group">
+                        <label>Room Type</label>
+                        <select id="roomType">
+                            <option value="">Select room type</option>
+                            <option value="AC">AC</option>
+                            <option value="Non-AC">Non-AC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of People</label>
+                        <input type="number" id="numberOfPeople" placeholder="Enter number of people" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea id="notes" placeholder="Any special requirements or notes" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Get Token</button>
+            </form>
+
+            <div class="github-link">
+                <a href="https://github.com/msrihari7353-hub/qr-token-management-system" target="_blank">
+                    ⭐ View Full Source Code on GitHub
+                </a>
+            </div>
+        </div>
+
+        <!-- Confirmation Page -->
+        <div id="confirmationPage" class="confirmation-card hidden">
+            <div class="success-icon">✅</div>
+            <h1>Token Generated Successfully!</h1>
+            
+            <div class="token-display">
+                <div class="token-label">Your Token Number</div>
+                <div class="token-number" id="displayTokenNumber">DEMO-0001</div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-item">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value" id="displayName"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Phone:</span>
+                    <span class="info-value" id="displayPhone"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Service:</span>
+                    <span class="info-value" id="displayService"></span>
+                </div>
+            </div>
+
+            <div class="sms-notification">
+                <p>📱 In production, an SMS would be sent to your phone</p>
+                <p style="font-weight: 600;">
+                    "Hello [NAME], your token is [TOKEN]. Please wait for the notification."
+                </p>
+            </div>
+
+            <div class="demo-note" style="margin-top: 20px;">
+                This is a demo. In production, you'll receive real SMS notifications!
+            </div>
+
+            <button class="submit-btn" onclick="resetForm()" style="margin-top: 20px;">
+                Create Another Token
+            </button>
+
+            <div class="github-link">
+                <a href="https://github.com/msrihari7353-hub/qr-token-management-system" target="_blank">
+                    ⭐ Get the Full System on GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const serviceTypeSelect = document.getElementById('serviceType');
+        const corporateFields = document.getElementById('corporateFields');
+        const templeFields = document.getElementById('templeFields');
+        const hotelFields = document.getElementById('hotelFields');
+        const tokenForm = document.getElementById('tokenForm');
+        const customerForm = document.getElementById('customerForm');
+        const confirmationPage = document.getElementById('confirmationPage');
+
+        let tokenCounter = 1;
+
+        // Show/hide fields based on service type
+        serviceTypeSelect.addEventListener('change', function() {
+            corporateFields.classList.add('hidden');
+            templeFields.classList.add('hidden');
+            hotelFields.classList.add('hidden');
+
+            if (this.value === 'corporate') {
+                corporateFields.classList.remove('hidden');
+            } else if (this.value === 'temple') {
+                templeFields.classList.remove('hidden');
+            } else if (this.value === 'hotel') {
+                hotelFields.classList.remove('hidden');
+            }
+        });
+
+        // Handle form submission
+        tokenForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const serviceType = document.getElementById('serviceType').value;
+
+            // Generate token number
+            const tokenNumber = `DEMO-${String(tokenCounter).padStart(4, '0')}`;
+            tokenCounter++;
+
+            // Display confirmation
+            document.getElementById('displayTokenNumber').textContent = tokenNumber;
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayPhone').textContent = phone;
+            document.getElementById('displayService').textContent = serviceType.charAt(0).toUpperCase() + serviceType.slice(1);
+
+            // Show confirmation page
+            customerForm.classList.add('hidden');
+            confirmationPage.classList.remove('hidden');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+
+        function resetForm() {
+            tokenForm.reset();
+            corporateFields.classList.add('hidden');
+            templeFields.classList.add('hidden');
+            hotelFields.classList.add('hidden');
+            customerForm.classList.remove('hidden');
+            confirmationPage.classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
